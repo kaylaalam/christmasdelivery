@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Taylor Clause's Gift Delivery Route</title>
+  <title>Gift Delivery Route</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     body {
@@ -206,6 +206,15 @@
       color: #2563eb;
       text-decoration: underline;
     }
+    .segment-label {
+      font-size: 0.85rem;
+      color: #6b7280;
+      margin-bottom: 2px;
+    }
+    .packed-done {
+      text-decoration: line-through;
+      opacity: 0.6;
+    }
   </style>
 </head>
 <body>
@@ -255,39 +264,50 @@
 
       <div class="card packing-section">
         <h3>Packing Order – Day 1 (Back → Front)</h3>
-        <h4>Back of trunk (last stops)</h4>
+
+        <h4>Segment 3 – Escondido → San Marcos → Vista → Carlsbad → Cardiff</h4>
+        <div class="segment-label">Back of trunk – last stops</div>
         <ul>
-          <li>Diane Hansen</li>
-          <li>Fresh Start (4 gifts together)</li>
-          <li>Archer Health</li>
-          <li>Hudson Printing</li>
-          <li>Jared Gustafson</li>
-          <li>Michael Savenye</li>
-          <li>MackPac</li>
+          <li data-pack-id="d1-pack-diane">Diane Hansen</li>
+          <li data-pack-id="d1-pack-fresh">Fresh Start (4 gifts together)</li>
+          <li data-pack-id="d1-pack-archer">Archer Health</li>
+          <li data-pack-id="d1-pack-hudson">Hudson Printing</li>
+          <li data-pack-id="d1-pack-jared">Jared Gustafson</li>
+          <li data-pack-id="d1-pack-savenye">Michael Savenye</li>
+          <li data-pack-id="d1-pack-mackpac">MackPac</li>
         </ul>
-        <h4>Middle</h4>
+
+        <h4>Segment 2 – Rancho Bernardo → Escondido</h4>
+        <div class="segment-label">Middle of trunk – mid-route</div>
         <ul>
-          <li>Mike Nix</li>
-          <li>Native Youth x2 (Johnny, Keith/Neletta)</li>
-          <li>Neighborhood Healthcare</li>
-          <li>Palomar Admin + Foundation</li>
-          <li>Unicorn (Sales Team)</li>
+          <li data-pack-id="d1-pack-mike">Mike Nix</li>
+          <li data-pack-id="d1-pack-ny-johnny">Native Youth – Johnny</li>
+          <li data-pack-id="d1-pack-ny-keith">Native Youth – Keith &amp; Neletta</li>
+          <li data-pack-id="d1-pack-neighborhood">Neighborhood Healthcare</li>
+          <li data-pack-id="d1-pack-palomar-admin">Palomar Admin</li>
+          <li data-pack-id="d1-pack-palomar-foundation">Palomar Foundation</li>
+          <li data-pack-id="d1-pack-unicorn">Unicorn (Sales Team)</li>
         </ul>
-        <h4>Front (first stops)</h4>
+
+        <h4>Segment 1 – Mira Mesa → Scripps → Tierrasanta → Rancho Bernardo</h4>
+        <div class="segment-label">Front of trunk – first stops</div>
         <ul>
-          <li>Ian Ambrose</li>
-          <li>Lynda Ruiz</li>
-          <li>Lori Moore</li>
-          <li>Environments by Design</li>
-          <li>Eddie Chen</li>
-          <li>Greenman IT</li>
+          <li data-pack-id="d1-pack-ian">Ian Ambrose</li>
+          <li data-pack-id="d1-pack-lynda">Lynda Ruiz</li>
+          <li data-pack-id="d1-pack-lori">Lori Moore</li>
+          <li data-pack-id="d1-pack-env">Environments by Design</li>
+          <li data-pack-id="d1-pack-eddie">Eddie Chen</li>
+          <li data-pack-id="d1-pack-greenman">Greenman IT</li>
         </ul>
+
         <p class="hint">Front = first stops. Back = last stops.</p>
       </div>
 
       <div class="card">
         <h3>Checklist – Day 1</h3>
         <p class="hint">Check off as you go. Tap the address to open in Maps. Progress saves on this device.</p>
+
+        <h4>Segment 1 – HQ → Mira Mesa → Scripps → Tierrasanta → RB</h4>
         <ul class="checklist">
           <li>
             <input type="checkbox" data-stop-id="day1-stop1" />
@@ -379,7 +399,10 @@
               </div>
             </div>
           </li>
+        </ul>
 
+        <h4>Segment 2 – Rancho Bernardo → Escondido</h4>
+        <ul class="checklist">
           <li>
             <input type="checkbox" data-stop-id="day1-stop8" />
             <div class="stop-text">
@@ -431,7 +454,10 @@
               </div>
             </div>
           </li>
+        </ul>
 
+        <h4>Segment 3 – Escondido → San Marcos → Vista → Carlsbad → Cardiff</h4>
+        <ul class="checklist">
           <li>
             <input type="checkbox" data-stop-id="day1-stop14" />
             <div class="stop-text">
@@ -560,29 +586,43 @@
 
       <div class="card packing-section">
         <h3>Packing Order – Day 2 (Back → Front)</h3>
-        <h4>Back of trunk (last stops)</h4>
+
+        <h4>Segment 3 – La Mesa → El Cajon → Chula Vista → HQ</h4>
+        <div class="segment-label">Back of trunk – last stops</div>
         <ul>
-          <li>Michael Bowie</li>
-          <li>Cal Roof (Doug &amp; Lana + Group Gift – 2 gifts)</li>
-          <li>Josh Marti</li>
+          <li data-pack-id="d2-pack-bowie">Michael Bowie</li>
+          <li data-pack-id="d2-pack-doug">Doug &amp; Lana Barry – Cal Roof</li>
+          <li data-pack-id="d2-pack-calroof-group">Cal Roof Group Gift</li>
+          <li data-pack-id="d2-pack-josh">Josh Marti</li>
         </ul>
-        <h4>Middle</h4>
+
+        <h4>Segment 2 – Downtown → Normal Heights → North Park → La Mesa</h4>
+        <div class="segment-label">Middle of trunk – mid-route</div>
         <ul>
-          <li>Vincent Affinito</li>
-          <li>Medical Age Management (Darren + Office – 2 gifts)</li>
+          <li data-pack-id="d2-pack-vincent">Vincent Affinito</li>
+          <li data-pack-id="d2-pack-darren">Darren Farnesi</li>
+          <li data-pack-id="d2-pack-mam-office">MAM Office Group Gift</li>
         </ul>
-        <h4>Front (first stops)</h4>
+
+        <h4>Segment 1 – HQ → Shelter Island → Little Italy → Downtown</h4>
+        <div class="segment-label">Front of trunk – first stops</div>
         <ul>
-          <li>Sean Welch</li>
-          <li>Mojo (4 gifts: Billy, Emi, Ryan, Gary)</li>
-          <li>Bobbi</li>
+          <li data-pack-id="d2-pack-sean">Sean Welch</li>
+          <li data-pack-id="d2-pack-billy">Mojo – Billy Johnson</li>
+          <li data-pack-id="d2-pack-emi">Mojo – Emi Weiss</li>
+          <li data-pack-id="d2-pack-ryan">Mojo – Ryan Tewes</li>
+          <li data-pack-id="d2-pack-gary">Mojo – Gary Jacobs</li>
+          <li data-pack-id="d2-pack-bobbi">Bobbi</li>
         </ul>
+
         <p class="hint">Load last stops in the very back so you don’t dig through the car.</p>
       </div>
 
       <div class="card">
         <h3>Checklist – Day 2</h3>
         <p class="hint">Check off each gift as it’s delivered. Tap the address for Maps.</p>
+
+        <h4>Segment 1 – HQ → Shelter Island → Little Italy → Downtown</h4>
         <ul class="checklist">
           <li>
             <input type="checkbox" data-stop-id="day2-stop1" />
@@ -661,7 +701,10 @@
               </div>
             </div>
           </li>
+        </ul>
 
+        <h4>Segment 2 – Downtown → Normal Heights → North Park → La Mesa</h4>
+        <ul class="checklist">
           <li>
             <input type="checkbox" data-stop-id="day2-stop7" />
             <div class="stop-text">
@@ -713,7 +756,10 @@
               </div>
             </div>
           </li>
+        </ul>
 
+        <h4>Segment 3 – La Mesa → El Cajon → Chula Vista → HQ</h4>
+        <ul class="checklist">
           <li>
             <input type="checkbox" data-stop-id="day2-stop11" />
             <div class="stop-text">
@@ -823,7 +869,60 @@
         });
       });
 
-      // Checklist persistence with localStorage
+      // Map checklist stops to packing list items (for cross-out)
+      var stopToPackMap = {
+        // Day 1
+        "day1-stop1": ["d1-pack-greenman"],
+        "day1-stop2": ["d1-pack-eddie"],
+        "day1-stop3": ["d1-pack-env"],
+        "day1-stop4": ["d1-pack-lori"],
+        "day1-stop5": ["d1-pack-lynda"],
+        "day1-stop6": ["d1-pack-ian"],
+        "day1-stop7": ["d1-pack-unicorn"],
+        "day1-stop8": ["d1-pack-palomar-admin", "d1-pack-palomar-foundation"],
+        "day1-stop10": ["d1-pack-neighborhood"],
+        "day1-stop11": ["d1-pack-ny-johnny", "d1-pack-ny-keith"],
+        "day1-stop13": ["d1-pack-mike"],
+        "day1-stop14": ["d1-pack-mackpac"],
+        "day1-stop15": ["d1-pack-savenye"],
+        "day1-stop16": ["d1-pack-jared"],
+        "day1-stop17": ["d1-pack-hudson"],
+        "day1-stop18": ["d1-pack-archer"],
+        "day1-stop19": ["d1-pack-fresh"],
+        "day1-stop20": ["d1-pack-diane"],
+
+        // Day 2
+        "day2-stop1": ["d2-pack-bobbi"],
+        "day2-stop2": ["d2-pack-billy"],
+        "day2-stop3": ["d2-pack-emi"],
+        "day2-stop4": ["d2-pack-ryan"],
+        "day2-stop5": ["d2-pack-gary"],
+        "day2-stop6": ["d2-pack-sean"],
+        "day2-stop7": ["d2-pack-darren"],
+        "day2-stop8": ["d2-pack-mam-office"],
+        "day2-stop9": ["d2-pack-vincent"],
+        "day2-stop10": ["d2-pack-josh"],
+        "day2-stop11": ["d2-pack-doug"],
+        "day2-stop12": ["d2-pack-calroof-group"],
+        "day2-stop13": ["d2-pack-bowie"]
+      };
+
+      function updatePackingForStop(stopId, isDone) {
+        var packIds = stopToPackMap[stopId];
+        if (!packIds) return;
+        for (var i = 0; i < packIds.length; i++) {
+          var el = document.querySelector('[data-pack-id="' + packIds[i] + '"]');
+          if (el) {
+            if (isDone) {
+              el.classList.add("packed-done");
+            } else {
+              el.classList.remove("packed-done");
+            }
+          }
+        }
+      }
+
+      // Checklist persistence with localStorage + packing sync
       var checkboxes = document.querySelectorAll('input[type="checkbox"][data-stop-id]');
       Array.prototype.forEach.call(checkboxes, function (cb) {
         var stopId = cb.getAttribute("data-stop-id");
@@ -838,6 +937,7 @@
         }
         if (saved === "1") {
           cb.checked = true;
+          updatePackingForStop(stopId, true);
         }
 
         // Save on change
@@ -847,6 +947,7 @@
           } catch (e) {
             // Ignore if storage isn't available
           }
+          updatePackingForStop(stopId, cb.checked);
         });
       });
     });
