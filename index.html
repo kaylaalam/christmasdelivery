@@ -791,50 +791,46 @@
   </div>
 
   <script>
+    // Tab switching
     document.addEventListener("DOMContentLoaded", function () {
-      var tabButtons = document.querySelectorAll(".tab-button");
-      var views = {
+      const tabButtons = document.querySelectorAll(".tab-button");
+      const views = {
         day1: document.getElementById("view-day1"),
         day2: document.getElementById("view-day2"),
-        instructions: document.getElementById("view-instructions")
+        instructions: document.getElementById("view-instructions"),
       };
-  
-      // Safer tab switching (works even if a view is missing)
-      Array.prototype.forEach.call(tabButtons, function (btn) {
-        btn.addEventListener("click", function () {
-          var tab = btn.getAttribute("data-tab");
-  
-          // Update active tab button
-          Array.prototype.forEach.call(tabButtons, function (b) {
-            b.classList.remove("active");
-          });
+
+      tabButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const tab = btn.getAttribute("data-tab");
+          // Set active tab button
+          tabButtons.forEach((b) => b.classList.remove("active"));
           btn.classList.add("active");
-  
-          // Show corresponding view (only if it exists)
-          Object.keys(views).forEach(function (key) {
-            if (views[key]) {
-              views[key].classList.toggle("active", key === tab);
-            }
+          // Show corresponding view
+          Object.keys(views).forEach((key) => {
+            views[key].classList.toggle("active", key === tab);
           });
         });
       });
-  
+
       // Checklist persistence with localStorage
-      var checkboxes = document.querySelectorAll('input[type="checkbox"][data-stop-id]');
-      Array.prototype.forEach.call(checkboxes, function (cb) {
-        var stopId = cb.getAttribute("data-stop-id");
-        var key = "delivery-stop-" + stopId;
-  
-        // Load saved state
-        var saved = localStorage.getItem(key);
+      const checkboxes = document.querySelectorAll('input[type="checkbox"][data-stop-id]');
+      checkboxes.forEach((cb) => {
+        const stopId = cb.getAttribute("data-stop-id");
+        const key = "delivery-stop-" + stopId;
+
+        // Load state
+        const saved = localStorage.getItem(key);
         if (saved === "1") {
           cb.checked = true;
         }
-  
+
         // Save on change
-        cb.addEventListener("change", function () {
+        cb.addEventListener("change", () => {
           localStorage.setItem(key, cb.checked ? "1" : "0");
         });
       });
     });
   </script>
+</body>
+</html>
