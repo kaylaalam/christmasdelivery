@@ -31,6 +31,65 @@
       max-width: 900px;
       margin: 0 auto;
     }
+
+    /* Progress bar / Santa tracker */
+    .progress-card {
+      margin-bottom: 12px;
+    }
+    .progress-label {
+      font-size: 0.9rem;
+      margin-bottom: 6px;
+      color: #111827;
+    }
+    .progress-track {
+      position: relative;
+      height: 18px;
+      background: #e5e7eb;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 6px;
+    }
+    .progress-fill {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 0%;
+      background: linear-gradient(90deg, #22c55e, #16a34a, #15803d);
+      transition: width 0.35s ease;
+    }
+    .santa-icon {
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      background: #ffffff;
+      box-shadow: 0 4px 8px rgba(15, 23, 42, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      z-index: 3;
+    }
+    .progress-milestone {
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 16px;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .milestone-start { left: 0%; }
+    .milestone-mid1  { left: 33%; }
+    .milestone-mid2  { left: 66%; }
+    .milestone-end   { left: 100%; }
+    .progress-caption {
+      font-size: 0.8rem;
+      color: #6b7280;
+    }
+
     .tabs {
       display: flex;
       gap: 8px;
@@ -65,12 +124,8 @@
     h2, h3, h4 {
       margin: 0 0 6px 0;
     }
-    h2 {
-      font-size: 1.05rem;
-    }
-    h3 {
-      font-size: 0.98rem;
-    }
+    h2 { font-size: 1.05rem; }
+    h3 { font-size: 0.98rem; }
     h4 {
       font-size: 0.9rem;
       color: #4b5563;
@@ -136,9 +191,7 @@
     .stop-text {
       flex: 1;
     }
-    .stop-label-line1 {
-      font-weight: 600;
-    }
+    .stop-label-line1 { font-weight: 600; }
     .stop-label-line2 {
       color: #4b5563;
       font-size: 0.84rem;
@@ -224,6 +277,32 @@
   </header>
 
   <div class="app-container">
+
+    <!-- SANTA / TAYLOR PROGRESS BAR -->
+    <div class="card progress-card">
+      <h3>Delivery Progress</h3>
+      <div id="progress-label" class="progress-label">
+        0 / 36 gifts delivered (0%)
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill"></div>
+
+        <!-- North Pole / InnoVision HQ -->
+        <div class="progress-milestone milestone-start">🏔️</div>
+        <!-- Midway landmarks -->
+        <div class="progress-milestone milestone-mid1">🌉</div>
+        <div class="progress-milestone milestone-mid2">🌊</div>
+        <!-- Final “all gifts delivered” stop -->
+        <div class="progress-milestone milestone-end">🎁</div>
+
+        <!-- Santa with Taylor’s face (placeholder emoji) -->
+        <div class="santa-icon" id="santa-icon">🎅</div>
+      </div>
+      <div class="progress-caption">
+        Starts at the “North Pole” (InnoVision HQ) and travels with each gift delivered until the last present is dropped off 🎁
+      </div>
+    </div>
+
     <div class="tabs">
       <button class="tab-button active" data-tab="day1">🟦 Day 1 – North County</button>
       <button class="tab-button" data-tab="day2">🟥 Day 2 – Central & South</button>
@@ -310,7 +389,7 @@
         <h4>Segment 1 – HQ → Mira Mesa → Scripps → Tierrasanta → RB</h4>
         <ul class="checklist">
           <li>
-            <input type="checkbox" data-stop-id="day1-stop1" />
+            <input type="checkbox" data-stop-id="day1-stop1" data-gifts="1" />
             <div class="stop-text">
               <div class="stop-label-line1">1. Greenman IT <span class="pill">Mira Mesa</span></div>
               <div class="stop-label-line2">Gift: Cookies (Office Gift)</div>
@@ -323,7 +402,7 @@
           </li>
 
           <li>
-            <input type="checkbox" data-stop-id="day1-stop2" />
+            <input type="checkbox" data-stop-id="day1-stop2" data-gifts="1" />
             <div class="stop-text">
               <div class="stop-label-line1">2. Eddie Chen <span class="pill">Mira Mesa</span></div>
               <div class="stop-label-line2">Gift: Level 5 – Glasses</div>
@@ -336,7 +415,7 @@
           </li>
 
           <li>
-            <input type="checkbox" data-stop-id="day1-stop3" />
+            <input type="checkbox" data-stop-id="day1-stop3" data-gifts="1" />
             <div class="stop-text">
               <div class="stop-label-line1">3. Environments by Design <span class="pill">Mira Mesa</span></div>
               <div class="stop-label-line2">Gift: Cookies (Group Gift)</div>
@@ -349,7 +428,7 @@
           </li>
 
           <li>
-            <input type="checkbox" data-stop-id="day1-stop4" />
+            <input type="checkbox" data-stop-id="day1-stop4" data-gifts="1" />
             <div class="stop-text">
               <div class="stop-label-line1">4. Lori Moore <span class="pill">Scripps</span></div>
               <div class="stop-label-line2">Gift: Level 5 – Glasses</div>
@@ -362,7 +441,7 @@
           </li>
 
           <li>
-            <input type="checkbox" data-stop-id="day1-stop5" />
+            <input type="checkbox" data-stop-id="day1-stop5" data-gifts="1" />
             <div class="stop-text">
               <div class="stop-label-line1">5. Lynda Ruiz <span class="pill">Scripps</span></div>
               <div class="stop-label-line2">Gift: Level 3 – Glasses</div>
@@ -375,7 +454,7 @@
           </li>
 
           <li>
-            <input type="checkbox" data-stop-id="day1-stop6" />
+            <input type="checkbox" data-stop-id="day1-stop6" data-gifts="1" />
             <div class="stop-text">
               <div class="stop-label-line1">6. Ian Ambrose <span class="pill">Tierrasanta</span></div>
               <div class="stop-label-line2">Gift: Level 3 – Moka Pot (Blue)</div>
@@ -388,7 +467,7 @@
           </li>
 
           <li>
-            <input type="checkbox" data-stop-id="day1-stop7" />
+            <input type="checkbox" data-stop-id="day1-stop7" data-gifts="1" />
             <div class="stop-text">
               <div class="stop-label-line1">7. Unicorn – Sales Team <span class="pill">Rancho Bernardo</span></div>
               <div class="stop-label-line2">Gift: Cookies (Group Gift)</div>
@@ -404,7 +483,7 @@
         <h4>Segment 2 – Rancho Bernardo → Escondido</h4>
         <ul class="checklist">
           <li>
-            <input type="checkbox" data-stop-id="day1-stop8" />
+            <input type="checkbox" data-stop-id="day1-stop8" data-gifts="2" />
             <div class="stop-text">
               <div class="stop-label-line1">8–9. Palomar Admin + Foundation <span class="pill">Escondido</span></div>
               <div class="stop-label-line2">Gift: Cookies (2 group gifts)</div>
@@ -417,7 +496,7 @@
           </li>
 
           <li>
-            <input type="checkbox" data-stop-id="day1-stop10" />
+            <input type="checkbox" data-stop-id="day1-stop10" data-gifts="1" />
             <div class="stop-text">
               <div class="stop-label-line1">10. Neighborhood Healthcare <span class="pill">Escondido</span></div>
               <div class="stop-label-line2">Gift: Cookies (Group Gift)</div>
@@ -430,7 +509,7 @@
           </li>
 
           <li>
-            <input type="checkbox" data-stop-id="day1-stop11" />
+            <input type="checkbox" data-stop-id="day1-stop11" data-gifts="2" />
             <div class="stop-text">
               <div class="stop-label-line1">11–12. Native Youth – Johnny &amp; Keith/Neletta <span class="pill">Escondido</span></div>
               <div class="stop-label-line2">Gift: Level 5 – Godiva (2 gifts)</div>
@@ -443,7 +522,7 @@
           </li>
 
           <li>
-            <input type="checkbox" data-stop-id="day1-stop13" />
+            <input type="checkbox" data-stop-id="day1-stop13" data-gifts="1" />
             <div class="stop-text">
               <div class="stop-label-line1">13. Mike Nix <span class="pill">Escondido</span></div>
               <div class="stop-label-line2">Gift: Level 5 – Godiva</div>
@@ -459,7 +538,7 @@
         <h4>Segment 3 – Escondido → San Marcos → Vista → Carlsbad → Cardiff</h4>
         <ul class="checklist">
           <li>
-            <input type="checkbox" data-stop-id="day1-stop14" />
+            <input type="checkbox" data-stop-id="day1-stop14" data-gifts="1" />
             <div class="stop-text">
               <div class="stop-label-line1">14. MackPac Team <span class="pill">San Marcos</span></div>
               <div class="stop-label-line2">Gift: Cookies (Group Gift)</div>
@@ -472,7 +551,7 @@
           </li>
 
           <li>
-            <input type="checkbox" data-stop-id="day1-stop15" />
+            <input type="checkbox" data-stop-id="day1-stop15" data-gifts="1" />
             <div class="stop-text">
               <div class="stop-label-line1">15. Michael Savenye <span class="pill">Vista</span></div>
               <div class="stop-label-line2">Gift: Level 5 – Glasses</div>
@@ -485,7 +564,7 @@
           </li>
 
           <li>
-            <input type="checkbox" data-stop-id="day1-stop16" />
+            <input type="checkbox" data-stop-id="day1-stop16" data-gifts="1" />
             <div class="stop-text">
               <div class="stop-label-line1">16. Jared Gustafson <span class="pill">Vista</span></div>
               <div class="stop-label-line2">Gift: Level 5 – Glasses</div>
@@ -498,7 +577,7 @@
           </li>
 
           <li>
-            <input type="checkbox" data-stop-id="day1-stop17" />
+            <input type="checkbox" data-stop-id="day1-stop17" data-gifts="1" />
             <div class="stop-text">
               <div class="stop-label-line1">17. Hudson Printing <span class="pill">Carlsbad</span></div>
               <div class="stop-label-line2">Gift: Cookies (Group Gift)</div>
@@ -511,7 +590,7 @@
           </li>
 
           <li>
-            <input type="checkbox" data-stop-id="day1-stop18" />
+            <input type="checkbox" data-stop-id="day1-stop18" data-gifts="1" />
             <div class="stop-text">
               <div class="stop-label-line1">18. Archer Health – Arash &amp; Noosha <span class="pill">Carlsbad</span></div>
               <div class="stop-label-line2">Gift: Cookies (Group Gift)</div>
@@ -524,7 +603,7 @@
           </li>
 
           <li>
-            <input type="checkbox" data-stop-id="day1-stop19" />
+            <input type="checkbox" data-stop-id="day1-stop19" data-gifts="4" />
             <div class="stop-text">
               <div class="stop-label-line1">19. Fresh Start (Michelle, Jen, Shari, Office Gift) <span class="pill">Carlsbad</span></div>
               <div class="stop-label-line2">Gift: Mixed (4 gifts together)</div>
@@ -537,7 +616,7 @@
           </li>
 
           <li>
-            <input type="checkbox" data-stop-id="day1-stop20" />
+            <input type="checkbox" data-stop-id="day1-stop20" data-gifts="1" />
             <div class="stop-text">
               <div class="stop-label-line1">20. Diane Hansen <span class="pill">Cardiff</span></div>
               <div class="stop-label-line2">Gift: Level 1 – Moka Pot Set</div>
@@ -625,7 +704,7 @@
         <h4>Segment 1 – HQ → Shelter Island → Little Italy → Downtown</h4>
         <ul class="checklist">
           <li>
-            <input type="checkbox" data-stop-id="day2-stop1" />
+            <input type="checkbox" data-stop-id="day2-stop1" data-gifts="1" />
             <div class="stop-text">
               <div class="stop-label-line1">1. Bobbi Brieske <span class="pill">Shelter Island</span></div>
               <div class="stop-label-line2">Gift: Level 3 – Glasses (Set of 4)</div>
@@ -638,7 +717,7 @@
           </li>
 
           <li>
-            <input type="checkbox" data-stop-id="day2-stop2" />
+            <input type="checkbox" data-stop-id="day2-stop2" data-gifts="1" />
             <div class="stop-text">
               <div class="stop-label-line1">2. Mojo – Billy Johnson <span class="pill">Little Italy</span></div>
               <div class="stop-label-line2">Gift: Level 3 – Glasses (Set of 4)</div>
@@ -651,7 +730,7 @@
           </li>
 
           <li>
-            <input type="checkbox" data-stop-id="day2-stop3" />
+            <input type="checkbox" data-stop-id="day2-stop3" data-gifts="1" />
             <div class="stop-text">
               <div class="stop-label-line1">3. Mojo – Emi Weiss <span class="pill">Little Italy</span></div>
               <div class="stop-label-line2">Gift: Level 5 – Godiva Chocolates</div>
@@ -664,7 +743,7 @@
           </li>
 
           <li>
-            <input type="checkbox" data-stop-id="day2-stop4" />
+            <input type="checkbox" data-stop-id="day2-stop4" data-gifts="1" />
             <div class="stop-text">
               <div class="stop-label-line1">4. Mojo – Ryan Tewes <span class="pill">Little Italy</span></div>
               <div class="stop-label-line2">Gift: Level 5 – Godiva Chocolates</div>
@@ -677,7 +756,7 @@
           </li>
 
           <li>
-            <input type="checkbox" data-stop-id="day2-stop5" />
+            <input type="checkbox" data-stop-id="day2-stop5" data-gifts="1" />
             <div class="stop-text">
               <div class="stop-label-line1">5. Mojo – Gary Jacobs <span class="pill">Little Italy</span></div>
               <div class="stop-label-line2">Gift: Level 1 – Moka Pot Set</div>
@@ -690,7 +769,7 @@
           </li>
 
           <li>
-            <input type="checkbox" data-stop-id="day2-stop6" />
+            <input type="checkbox" data-stop-id="day2-stop6" data-gifts="1" />
             <div class="stop-text">
               <div class="stop-label-line1">6. Sean Welch <span class="pill">Downtown</span></div>
               <div class="stop-label-line2">Gift: Level 5 – Glasses (Set of 2)</div>
@@ -706,7 +785,7 @@
         <h4>Segment 2 – Downtown → Normal Heights → North Park → La Mesa</h4>
         <ul class="checklist">
           <li>
-            <input type="checkbox" data-stop-id="day2-stop7" />
+            <input type="checkbox" data-stop-id="day2-stop7" data-gifts="1" />
             <div class="stop-text">
               <div class="stop-label-line1">7. Darren Farnesi <span class="pill">Normal St</span></div>
               <div class="stop-label-line2">Gift: Level 3 – Moka Pot (Red)</div>
@@ -719,7 +798,7 @@
           </li>
 
           <li>
-            <input type="checkbox" data-stop-id="day2-stop8" />
+            <input type="checkbox" data-stop-id="day2-stop8" data-gifts="1" />
             <div class="stop-text">
               <div class="stop-label-line1">8. MAM Office Group Gift <span class="pill">Same location</span></div>
               <div class="stop-label-line2">Gift: Cookies (Group Gift)</div>
@@ -732,7 +811,7 @@
           </li>
 
           <li>
-            <input type="checkbox" data-stop-id="day2-stop9" />
+            <input type="checkbox" data-stop-id="day2-stop9" data-gifts="1" />
             <div class="stop-text">
               <div class="stop-label-line1">9. Vincent Affinito <span class="pill">North Park</span></div>
               <div class="stop-label-line2">Gift: Level 5 – Glasses (Set of 2)</div>
@@ -745,7 +824,7 @@
           </li>
 
           <li>
-            <input type="checkbox" data-stop-id="day2-stop10" />
+            <input type="checkbox" data-stop-id="day2-stop10" data-gifts="1" />
             <div class="stop-text">
               <div class="stop-label-line1">10. Josh Marti <span class="pill">La Mesa</span></div>
               <div class="stop-label-line2">Gift: Level 5 – Glasses (Set of 2)</div>
@@ -761,7 +840,7 @@
         <h4>Segment 3 – La Mesa → El Cajon → Chula Vista → HQ</h4>
         <ul class="checklist">
           <li>
-            <input type="checkbox" data-stop-id="day2-stop11" />
+            <input type="checkbox" data-stop-id="day2-stop11" data-gifts="1" />
             <div class="stop-text">
               <div class="stop-label-line1">11. Doug &amp; Lana Barry – Cal Roof <span class="pill">El Cajon</span></div>
               <div class="stop-label-line2">Gift: Level 1 – Moka Pot Set</div>
@@ -774,7 +853,7 @@
           </li>
 
           <li>
-            <input type="checkbox" data-stop-id="day2-stop12" />
+            <input type="checkbox" data-stop-id="day2-stop12" data-gifts="1" />
             <div class="stop-text">
               <div class="stop-label-line1">12. Cal Roof Group Gift <span class="pill">El Cajon</span></div>
               <div class="stop-label-line2">Gift: Cookies (Group Gift)</div>
@@ -787,7 +866,7 @@
           </li>
 
           <li>
-            <input type="checkbox" data-stop-id="day2-stop13" />
+            <input type="checkbox" data-stop-id="day2-stop13" data-gifts="1" />
             <div class="stop-text">
               <div class="stop-label-line1">13. Michael Bowie <span class="pill">Chula Vista</span></div>
               <div class="stop-label-line2">Gift: Level 3 – Panettone (35 oz)</div>
@@ -838,7 +917,7 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      // Tab switching (Safari-safe)
+      // Tab switching
       var tabButtons = document.querySelectorAll(".tab-button");
       var views = {
         day1: document.getElementById("view-day1"),
@@ -850,13 +929,11 @@
         btn.addEventListener("click", function () {
           var tab = btn.getAttribute("data-tab");
 
-          // Update active tab button
           Array.prototype.forEach.call(tabButtons, function (b) {
             b.classList.remove("active");
           });
           btn.classList.add("active");
 
-          // Show the matching view, hide the others
           Object.keys(views).forEach(function (key) {
             if (views[key]) {
               if (key === tab) {
@@ -922,7 +999,37 @@
         }
       }
 
-      // Checklist persistence with localStorage + packing sync
+      // Progress bar: gifts delivered vs total
+      function recalcProgress() {
+        var checkboxes = document.querySelectorAll('input[type="checkbox"][data-stop-id]');
+        var totalGifts = 0;
+        var deliveredGifts = 0;
+
+        Array.prototype.forEach.call(checkboxes, function (cb) {
+          var gifts = parseInt(cb.getAttribute("data-gifts") || "1", 10);
+          totalGifts += gifts;
+          if (cb.checked) {
+            deliveredGifts += gifts;
+          }
+        });
+
+        var pct = totalGifts ? Math.round((deliveredGifts / totalGifts) * 100) : 0;
+        var barFill = document.getElementById("progress-fill");
+        var santa = document.getElementById("santa-icon");
+        var label = document.getElementById("progress-label");
+
+        if (barFill) {
+          barFill.style.width = pct + "%";
+        }
+        if (santa) {
+          santa.style.left = pct + "%";
+        }
+        if (label) {
+          label.textContent = deliveredGifts + " / " + totalGifts + " gifts delivered (" + pct + "%)";
+        }
+      }
+
+      // Checklist persistence with localStorage + packing + progress sync
       var checkboxes = document.querySelectorAll('input[type="checkbox"][data-stop-id]');
       Array.prototype.forEach.call(checkboxes, function (cb) {
         var stopId = cb.getAttribute("data-stop-id");
@@ -933,7 +1040,7 @@
         try {
           saved = localStorage.getItem(key);
         } catch (e) {
-          // If localStorage is blocked, ignore
+          // Ignore if localStorage is blocked
         }
         if (saved === "1") {
           cb.checked = true;
@@ -948,8 +1055,12 @@
             // Ignore if storage isn't available
           }
           updatePackingForStop(stopId, cb.checked);
+          recalcProgress();
         });
       });
+
+      // Initial progress calculation
+      recalcProgress();
     });
   </script>
 </body>
