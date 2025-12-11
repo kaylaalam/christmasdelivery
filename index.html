@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Gift Delivery Helper</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f5f7fb;
+      color: #111827;
+    }
+    header {
+      background: #111827;
+      color: #f9fafb;
+      padding: 14px 16px;
+      text-align: center;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+    .subheader {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #e5e7eb;
+      margin-top: 4px;
+    }
+    .app-container {
+      padding: 12px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+      position: sticky;
+      top: 0;
+      background: #f5f7fb;
+      padding-bottom: 8px;
+      z-index: 10;
+    }
+    .tab-button {
+      flex: 1;
+      padding: 10px 8px;
+      border-radius: 999px;
+      border: none;
+      background: #e5e7eb;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .tab-button.active {
+      background: #2563eb;
+      color: #f9fafb;
+    }
+    .card {
+      background: #ffffff;
+      border-radius: 14px;
+      padding: 12px 14px;
+      box-shadow: 0 6px 12px rgba(15, 23, 42, 0.08);
+      margin-bottom: 12px;
+    }
+    h2, h3, h4 {
+      margin: 0 0 6px 0;
+    }
+    h2 {
+      font-size: 1.05rem;
+    }
+    h3 {
+      font-size: 0.98rem;
+    }
+    h4 {
+      font-size: 0.9rem;
+      color: #4b5563;
+    }
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 4px;
+      font-size: 0.8rem;
+    }
+    .tag {
+      background: #e5f1ff;
+      color: #1d4ed8;
+      border-radius: 999px;
+      padding: 3px 8px;
+      font-weight: 500;
+    }
+    .summary-list {
+      margin: 4px 0 0 0;
+      padding-left: 18px;
+      font-size: 0.9rem;
+    }
+    .btn-link {
+      display: inline-block;
+      margin: 4px 4px 0 0;
+      padding: 8px 10px;
+      font-size: 0.85rem;
+      text-decoration: none;
+      border-radius: 999px;
+      background: #e5e7eb;
+      color: #111827;
+      font-weight: 500;
+    }
+    .btn-link.primary {
+      background: #2563eb;
+      color: #f9fafb;
+    }
+    .btn-link:active {
+      transform: scale(0.98);
+    }
+    .checklist {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      font-size: 0.9rem;
+    }
+    .checklist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 6px 0;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .checklist li:last-child {
+      border-bottom: none;
+    }
+    .checklist input[type="checkbox"] {
+      margin-top: 3px;
+      transform: scale(1.2);
+      cursor: pointer;
+    }
+    .stop-text {
+      flex: 1;
+    }
+    .stop-label-line1 {
+      font-weight: 600;
+    }
+    .stop-label-line2 {
+      color: #4b5563;
+      font-size: 0.84rem;
+    }
+    .stop-label-line3 {
+      color: #6b7280;
+      font-size: 0.8rem;
+    }
+    .pill {
+      display: inline-block;
+      padding: 3px 7px;
+      border-radius: 999px;
+      background: #eef2ff;
+      color: #4f46e5;
+      font-size: 0.78rem;
+      margin-left: 4px;
+    }
+    .packing-section ul {
+      margin: 4px 0 0 18px;
+      padding: 0;
+      font-size: 0.9rem;
+    }
+    .packing-section li {
+      margin-bottom: 2px;
+    }
+    .hint {
+      font-size: 0.8rem;
+      color: #6b7280;
+      margin-top: 4px;
+    }
+    .view {
+      display: none;
+    }
+    .view.active {
+      display: block;
+    }
+    .badge-day {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .badge-day.day1 {
+      background: #dbebff;
+      color: #1d4ed8;
+    }
+    .badge-day.day2 {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+    .instructions-list {
+      font-size: 0.9rem;
+      padding-left: 18px;
+    }
+    .instructions-list li {
+      margin-bottom: 6px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    Gift Delivery Helper
+    <div class="subheader">2-Day Route • Checklists • Maps • Packing Order</div>
+  </header>
+
+  <div class="app-container">
+    <div class="tabs">
+      <button class="tab-button active" data-tab="day1">🟦 Day 1 – North County</button>
+      <button class="tab-button" data-tab="day2">🟥 Day 2 – Central & South</button>
+      <button class="tab-button" data-tab="instructions">📋 Instructions</button>
+    </div>
+
+    <!-- DAY 1 VIEW -->
+    <div class="view active" id="view-day1">
+      <div class="card">
+        <span class="badge-day day1">DAY 1 – NORTH COUNTY</span>
+        <h2>Route Overview</h2>
+        <p>Mira Mesa → Scripps → Rancho Bernardo → Escondido → San Marcos → Vista → Carlsbad → Cardiff</p>
+        <ul class="summary-list">
+          <li>36 total gifts (28 unique addresses across both days)</li>
+          <li>Optimized into 2 delivery days</li>
+          <li>Includes route order, Maps links, packing order, and checklists</li>
+        </ul>
+        <div class="tag-row">
+          <span class="tag">Maps Links</span>
+          <span class="tag">Packing Plan</span>
+          <span class="tag">Checklist Saves on Phone</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Google Maps Links – Day 1</h3>
+        <p class="hint">Tap a segment to open it in Maps. Do them in order.</p>
+        <a class="btn-link primary" href="https://www.google.com/maps/dir/5961+Kearny+Villa+Rd,+San+Diego,+CA+92123/9672+Via+Excelencia,+San+Diego,+CA+92126/9245+Citrus+View+Ct,+San+Diego,+CA+92126/6755+Mira+Mesa+Blvd+Suite+123,+San+Diego,+CA+92121/10200+Willow+Creek+Rd+Suite+200,+San+Diego,+CA+92131/10918+Chardonnay+Pl,+San+Diego,+CA+92131/11773+Invierno+Dr,+San+Diego,+CA+92124/16781+Bernardo+Center+Dr,+San+Diego,+CA+92128" target="_blank" rel="noopener">
+          Segment 1 – HQ → Mira Mesa → Scripps → RB
+        </a>
+        <a class="btn-link" href="https://www.google.com/maps/dir/16781+Bernardo+Center+Dr,+San+Diego,+CA+92128/2125+Citracado+Pkwy+Suite+300,+Escondido,+CA+92029/2125+Citracado+Pkwy+Suite+340,+Escondido,+CA+92029/215+S+Hickory+St,+Escondido,+CA+92025/319+E+Valley+Pkwy,+Escondido,+CA+92025/970+W+Valley+Pkwy+657,+Escondido,+CA+92025" target="_blank" rel="noopener">
+          Segment 2 – Rancho Bernardo → Escondido
+        </a>
+        <a class="btn-link" href="https://www.google.com/maps/dir/970+W+Valley+Pkwy+657,+Escondido,+CA+92025/1239+Linda+Vista+Dr,+San+Marcos,+CA+92078/1163+Sunset+Dr,+Vista,+CA+92081/2826+La+Mirada+Dr+Unit+B,+Vista,+CA+92081/2780+Loker+Ave+W,+Carlsbad,+CA+92010/5927+Balfour+Ct+Suite+205,+Carlsbad,+CA+92008/2011+Palomar+Airport+Rd+Suite+206,+Carlsbad,+CA+92011/2088+Edinburg+Ave,+Cardiff,+CA+92007" target="_blank" rel="noopener">
+          Segment 3 – Escondido → San Marcos → Vista → Carlsbad → Cardiff
+        </a>
+      </div>
+
+      <div class="card packing-section">
+        <h3>Packing Order – Day 1 (Back → Front)</h3>
+        <h4>Back of trunk (last stops)</h4>
+        <ul>
+          <li>Diane Hansen</li>
+          <li>Fresh Start (4 gifts together)</li>
+          <li>Archer Health</li>
+          <li>Hudson Printing</li>
+          <li>Jared Gustafson</li>
+          <li>Michael Savenye</li>
+          <li>MackPac</li>
+        </ul>
+        <h4>Middle</h4>
+        <ul>
+          <li>Mike Nix</li>
+          <li>Native Youth x2 (Johnny, Keith/Neletta)</li>
+          <li>Neighborhood Healthcare</li>
+          <li>Palomar Admin + Foundation</li>
+          <li>Unicorn (Sales Team)</li>
+        </ul>
+        <h4>Front (first stops)</h4>
+        <ul>
+          <li>Ian Ambrose</li>
+          <li>Lynda Ruiz</li>
+          <li>Lori Moore</li>
+          <li>Environments by Design</li>
+          <li>Eddie Chen</li>
+          <li>Greenman IT</li>
+        </ul>
+        <p class="hint">Front = first stops. Back = last stops.</p>
+      </div>
+
+      <div class="card">
+        <h3>Checklist – Day 1</h3>
+        <p class="hint">Check off as you go. The app remembers your progress on this phone.</p>
+        <ul class="checklist">
+          <li>
+            <input type="checkbox" data-stop-id="day1-stop1" />
+            <div class="stop-text">
+              <div class="stop-label-line1">1. Greenman IT <span class="pill">Mira Mesa</span></div>
+              <div class="stop-label-line2">Gift: Cookies</div>
+              <div class="stop-label-line3">First stop of the day</div>
+            </div>
+          </li>
+          <li>
+            <input type="checkbox" data-stop-id="day1-stop2" />
+            <div class="stop-text">
+              <div class="stop-label-line1">2. Eddie Chen <span class="pill">Mira Mesa</span></div>
+              <div class="stop-label-line2">Gift: Level 5 – Glasses</div>
+            </div>
+          </li>
+          <li>
+            <input type="checkbox" data-stop-id="day1-stop3" />
+            <div class="stop-text">
+              <div class="stop-label-line1">3. Environments by Design <span class="pill">Mira Mesa</span></div>
+              <div class="stop-label-line2">Gift: Cookies</div>
+            </div>
+          </li>
+          <li>
+            <input type="checkbox" data-stop-id="day1-stop4" />
+            <div class="stop-text">
+              <div class="stop-label-line1">4. Lori Moore <span class="pill">Scripps</span></div>
+              <div class="stop-label-line2">Gift: Level 5 – Glasses</div>
+            </div>
+          </li>
+          <li>
+            <input type="checkbox" data-stop-id="day1-stop5" />
+            <div class="stop-text">
+              <div class="stop-label-line1">5. Lynda Ruiz <span class="pill">Scripps</span></div>
+              <div class="stop-label-line2">Gift: Level 3 – Glasses</div>
+            </div>
+          </li>
+          <li>
+            <input type="checkbox" data-stop-id="day1-stop6" />
+            <div class="stop-text">
+              <div class="stop-label-line1">6. Ian Ambrose <span class="pill">Tierrasanta</span></div>
+              <div class="stop-label-line2">Gift: Moka Pot</div>
+            </div>
+          </li>
+          <li>
+            <input type="checkbox" data-stop-id="day1-stop7" />
+            <div class="stop-text">
+              <div class="stop-label-line1">7. Unicorn – Sales Team <span class="pill">Rancho Bernardo</span></div>
+              <div class="stop-label-line2">Gift: Cookies</div>
+            </div>
+          </li>
+          <li>
+            <input type="checkbox" data-stop-id="day1-stop8" />
+            <div class="stop-text">
+              <div class="stop-label-line1">8–9. Palomar Admin + Foundation <span class="pill">Escondido</span></div>
+              <div class="stop-label-line2">Gift: Cookies (2 gifts)</div>
+            </div>
+          </li>
+          <li>
+            <input type="checkbox" data-stop-id="day1-stop10" />
+            <div class="stop-text">
+              <div class="stop-label-line1">10. Neighborhood Healthcare <span class="pill">Escondido</span></div>
+              <div class="stop-label-line2">Gift: Cookies</div>
+            </div>
+          </li>
+          <li>
+            <input type="checkbox" data-stop-id="day1-stop11" />
+            <div class="stop-text">
+              <div class="stop-label-line1">11–12. Native Youth – Johnny &amp; Keith/Neletta <span class="pill">Escondido</span></div>
+              <div class="stop-label-line2">Gift: Godiva (2 gifts)</div>
+            </div>
+          </li>
+          <li>
+            <input type="checkbox" data-stop-id="day1-stop13" />
+            <div class="stop-text">
+              <div class="stop-label-line1">13. Mike Nix <span class="pill">Escondido</span></div>
+              <div class="stop-label-line2">Gift: Godiva</div>
+            </div>
+          </li>
+          <li>
+            <input type="checkbox" data-stop-id="day1-stop14" />
+            <div class="stop-text">
+              <div class="stop-label-line1">14. MackPac Team <span class="pill">San Marcos</span></div>
+              <div class="stop-label-line2">Gift: Cookies</div>
+            </div>
+          </li>
+          <li>
+            <input type="checkbox" data-stop-id="day1-stop15" />
+            <div class="stop-text">
+              <div class="stop-label-line1">15. Michael Savenye <span class="pill">Vista</span></div>
+              <div class="stop-label-line2">Gift: Level 5 – Glasses</div>
+            </div>
+          </li>
+          <li>
+            <input type="checkbox" data-stop-id="day1-stop16" />
+            <div class="stop-text">
+              <div class="stop-label-line1">16. Jared Gustafson <span class="pill">Vista</span></div>
+              <div class="stop-label-line2">Gift: Level 5 – Glasses</div>
+            </div>
+          </li>
+          <li>
+            <input type="checkbox" data-stop-id="day1-stop17" />
+            <div class="stop-text">
+              <div class="stop-label-line1">17. Hudson Printing <span class="pill">Carlsbad</span></div>
+              <div class="stop-label-line2">Gift: Cookies</div>
+            </div>
+          </li>
+          <li>
+            <input type="checkbox" data-stop-id="day1-stop18" />
+            <div class="stop-text">
+              <div class="stop-label-line1">18. Archer Health <span class="pill">Carlsbad</span></div>
+              <div class="stop-label-line2">Gift: Cookies</div>
+            </div>
+          </li>
+          <li>
+            <input type="checkbox" data-stop-id="day1-stop19" />
+            <div class="stop-text">
+              <div class="stop-label-line1">19. Fresh Start (4 gifts) <span class="pill">Carlsbad</span></div>
+              <div class="stop-label-line2">Gift: Mixed (4 bags together)</div>
+            </div>
+          </li>
+          <li>
+            <input type="checkbox" data-stop-id="day1-stop20" />
+            <div class="stop-text">
+              <div class="stop-label-line1">20. Diane Hansen <span class="pill">Cardiff</span></div>
+              <div class="stop-label-line2">Gift: Level 1</div>
+              <div class="stop-label-line3">Last stop of the day</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- DAY 2 VIEW -->
+    <div class="view" id="view-day2">
+      <div class="card">
+        <span class="badge-day day2">DAY 2 – CENTRAL / DOWNTOWN / EAST / SOUTH</span>
+        <h2>Route Overview</h2>
+        <p>Shelter Island → Little Italy → Downtown → Normal Heights → North Park → La Mesa → El Cajon → Chula Vista</p>
+        <ul class="summary-list">
+          <li>Focus on central & south San Diego</li>
+          <li>Includes Mojo (4 gifts), Medical Age Management, Cal Roof multiples</li>
+        </ul>
+        <div class="tag-row">
+          <span class="tag">Downtown</span>
+          <span class="tag">East County</span>
+          <span class="tag">South Bay</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Google Maps Links – Day 2</h3>
+        <p class="hint">Tap in order for the smoothest route.</p>
+        <a class="btn-link primary" href="https://www.google.com/maps/dir/5961+Kearny+Villa+Rd,+San+Diego,+CA+92123/2241+Shelter+Island+Dr,+San+Diego,+CA+92106/555+W+Beech+St+Suite+504,+San+Diego,+CA+92101/350+Tenth+Ave+Suite+950,+San+Diego,+CA+92101" target="_blank" rel="noopener">
+          Segment 1 – HQ → Shelter Island → Little Italy → Downtown
+        </a>
+        <a class="btn-link" href="https://www.google.com/maps/dir/350+Tenth+Ave+Suite+950,+San+Diego,+CA+92101/3911+Normal+St,+San+Diego,+CA+92103/2119+Polk+Ave,+San+Diego,+CA+92104/5504+Connecticut+Ave,+La+Mesa,+CA+91942" target="_blank" rel="noopener">
+          Segment 2 – Downtown → Normal Heights → North Park → La Mesa
+        </a>
+        <a class="btn-link" href="https://www.google.com/maps/dir/5504+Connecticut+Ave,+La+Mesa,+CA+91942/1920+N+Marshall+Ave+Suite+100,+El+Cajon,+CA+92020/1691+O%27Connor+Ave,+Chula+Vista,+CA+91913/5961+Kearny+Villa+Rd,+San+Diego,+CA+92123" target="_blank" rel="noopener">
+          Segment 3 – La Mesa → El Cajon → Chula Vista → HQ
+        </a>
+      </div>
+
+      <div class="card packing-section">
+        <h3>Packing Order – Day 2 (Back → Front)</h3>
+        <h4>Back of trunk (last stops)</h4>
+        <ul>
+          <li>Michael Bowie</li>
+          <li>Cal Roof (Doug &amp; Lana + Group Gift – 2 gifts)</li>
+          <li>Josh Marti</li>
+        </ul>
+        <h4>Middle</h4>
+        <ul>
+          <li>Vincent Affinito</li>
+          <li>Medical Age Management (Darren + Office – 2 gifts)</li>
+        </ul>
+        <h4>Front (first stops)</h4>
+        <ul>
+          <li>Sean Welch</li>
+          <li>Mojo (4 individual gifts: Billy, Emi, Ryan, Gary)</li>
+          <li>Bobbi</li>
+        </ul>
+        <p class="hint">Load last stops in the very back so you don’t dig through the car.</p>
+      </div>
+
+      <div class="card">
+        <h3>Checklist – Day 2</h3>
+        <p class="hint">Check off each gift as it’s delivered.</p>
+        <ul class="checklist">
+          <li>
+            <input type="checkbox" data-stop-id="day2-stop1" />
+            <div class="stop-text">
+              <div class="stop-label-line1">1. Bobbi <span class="pill">Shelter Island</span></div>
+              <div class="stop-label-line2">Gift: Level 3</div>
+            </div>
+          </li>
+
+          <li>
+            <input type="checkbox" data-stop-id="day2-stop2" />
+            <div class="stop-text">
+              <div class="stop-label-line1">2. Mojo – Billy <span class="pill">Little Italy</span></div>
+              <div class="stop-label-line2">Gift: Level 3</div>
+            </div>
+          </li>
+          <li>
+            <input type="checkbox" data-stop-id="day2-stop3" />
+            <div class="stop-text">
+              <div class="stop-label-line1">3. Mojo – Emi <span class="pill">Little Italy</span></div>
+              <div class="stop-label-line2">Gift: Godiva</div>
+            </div>
+          </li>
+          <li>
+            <input type="checkbox" data-stop-id="day2-stop4" />
+            <div class="stop-text">
+              <div class="stop-label-line1">4. Mojo – Ryan <span class="pill">Little Italy</span></div>
+              <div class="stop-label-line2">Gift: Godiva</div>
+            </div>
+          </li>
+          <li>
+            <input type="checkbox" data-stop-id="day2-stop5" />
+            <div class="stop-text">
+              <div class="stop-label-line1">5. Mojo – Gary <span class="pill">Little Italy</span></div>
+              <div class="stop-label-line2">Gift: Moka Pot</div>
+            </div>
+          </li>
+
+          <li>
+            <input type="checkbox" data-stop-id="day2-stop6" />
+            <div class="stop-text">
+              <div class="stop-label-line1">6. Sean Welch <span class="pill">Downtown</span></div>
+              <div class="stop-label-line2">Gift: Level 5</div>
+            </div>
+          </li>
+
+          <li>
+            <input type="checkbox" data-stop-id="day2-stop7" />
+            <div class="stop-text">
+              <div class="stop-label-line1">7. Darren Farnesi <span class="pill">Normal St</span></div>
+              <div class="stop-label-line2">Gift: Level 3</div>
+            </div>
+          </li>
+          <li>
+            <input type="checkbox" data-stop-id="day2-stop8" />
+            <div class="stop-text">
+              <div class="stop-label-line1">8. MAM Office Gift <span class="pill">Same location</span></div>
+              <div class="stop-label-line2">Gift: Cookies</div>
+              <div class="stop-label-line3">Same address as Darren (Medical Age Management)</div>
+            </div>
+          </li>
+
+          <li>
+            <input type="checkbox" data-stop-id="day2-stop9" />
+            <div class="stop-text">
+              <div class="stop-label-line1">9. Vincent Affinito <span class="pill">North Park</span></div>
+              <div class="stop-label-line2">Gift: Level 5</div>
+            </div>
+          </li>
+
+          <li>
+            <input type="checkbox" data-stop-id="day2-stop10" />
+            <div class="stop-text">
+              <div class="stop-label-line1">10. Josh Marti <span class="pill">La Mesa</span></div>
+              <div class="stop-label-line2">Gift: Level 5</div>
+            </div>
+          </li>
+
+          <li>
+            <input type="checkbox" data-stop-id="day2-stop11" />
+            <div class="stop-text">
+              <div class="stop-label-line1">11. Doug &amp; Lana Barry – Cal Roof <span class="pill">El Cajon</span></div>
+              <div class="stop-label-line2">Gift: Level 1</div>
+            </div>
+          </li>
+          <li>
+            <input type="checkbox" data-stop-id="day2-stop12" />
+            <div class="stop-text">
+              <div class="stop-label-line1">12. Cal Roof Group Gift <span class="pill">El Cajon</span></div>
+              <div class="stop-label-line2">Gift: Cookies</div>
+              <div class="stop-label-line3">Same address as Doug &amp; Lana</div>
+            </div>
+          </li>
+
+          <li>
+            <input type="checkbox" data-stop-id="day2-stop13" />
+            <div class="stop-text">
+              <div class="stop-label-line1">13. Michael Bowie <span class="pill">Chula Vista</span></div>
+              <div class="stop-label-line2">Gift: Panettone</div>
+              <div class="stop-label-line3">Last stop of the day</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- INSTRUCTIONS VIEW -->
+    <div class="view" id="view-instructions">
+      <div class="card">
+        <h2>Instructions for Delivery</h2>
+        <ol class="instructions-list">
+          <li><strong>Follow the Google Maps links in order.</strong> Start with Segment 1, then Segment 2, etc.</li>
+          <li><strong>Use the checklist to mark off each delivery.</strong> The app remembers what you’ve checked on this phone.</li>
+          <li><strong>Gifts are packed in reverse order.</strong> Last stops go in the very back of the trunk, first stops go in the front.</li>
+          <li><strong>Multi-gift offices</strong> (Fresh Start, Mojo, Native Youth, MAM, Cal Roof):<br/>
+            → All bags for the same address are grouped together.
+          </li>
+          <li><strong>If no one answers at an office or home:</strong>
+            <ul>
+              <li>Leave at reception or front door (if appropriate)</li>
+              <li>Take a quick photo of where you left it</li>
+              <li>Send an update to Kayla with any notes</li>
+            </ul>
+          </li>
+        </ol>
+        <p class="hint">You can switch between Day 1 and Day 2 using the buttons at the top.</p>
+      </div>
+
+      <div class="card">
+        <h3>Tips for Using on iPhone / Android</h3>
+        <ul class="instructions-list">
+          <li><strong>Add to Home Screen:</strong> Open this page in Safari/Chrome, tap the share menu, then “Add to Home Screen” to make it feel like an app.</li>
+          <li><strong>Zoom:</strong> You can pinch-zoom if you want the text larger while you drive.</li>
+          <li><strong>Battery:</strong> Use low-power mode if you’re navigating all day.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Tab switching
+    document.addEventListener("DOMContentLoaded", function () {
+      const tabButtons = document.querySelectorAll(".tab-button");
+      const views = {
+        day1: document.getElementById("view-day1"),
+        day2: document.getElementById("view-day2"),
+        instructions: document.getElementById("view-instructions"),
+      };
+
+      tabButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const tab = btn.getAttribute("data-tab");
+          // Set active tab button
+          tabButtons.forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+          // Show corresponding view
+          Object.keys(views).forEach((key) => {
+            views[key].classList.toggle("active", key === tab);
+          });
+        });
+      });
+
+      // Checklist persistence with localStorage
+      const checkboxes = document.querySelectorAll('input[type="checkbox"][data-stop-id]');
+      checkboxes.forEach((cb) => {
+        const stopId = cb.getAttribute("data-stop-id");
+        const key = "delivery-stop-" + stopId;
+
+        // Load state
+        const saved = localStorage.getItem(key);
+        if (saved === "1") {
+          cb.checked = true;
+        }
+
+        // Save on change
+        cb.addEventListener("change", () => {
+          localStorage.setItem(key, cb.checked ? "1" : "0");
+        });
+      });
+    });
+  </script>
+</body>
+</html>
