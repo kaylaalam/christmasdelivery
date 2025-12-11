@@ -12,6 +12,8 @@
       padding: 0;
       background: #f5f7fb;
       color: #111827;
+      overflow-x: hidden;
+      /* NEW: prevents side-scroll */
     }
 
     header {
@@ -56,8 +58,8 @@
       overflow: visible;
       margin-top: 24px;
       margin-bottom: 12px;
-      /* a little extra space under the bar */
     }
+
 
     .progress-fill {
       position: absolute;
@@ -69,45 +71,48 @@
       transition: width 0.35s ease;
     }
 
+    /* Santa icon */
     .santa-icon {
       position: absolute;
       top: 50%;
       transform: translate(-50%, -50%);
-      width: 100px;
-      height: 100px;
+      width: 44px;
+      height: 44px;
       border-radius: 50%;
       overflow: hidden;
       z-index: 3;
     }
 
+    /* Santa image */
     .santa-img {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
 
+
+    /* Milestones (container) */
     .progress-milestone {
       position: absolute;
       top: 50%;
-      /* anchor at top of the track */
-      transform: translate(0%, -50%);
-      /* shift left & above the bar */
-      font-size: 18px;
+      transform: translate(-50%, -50%);
+      /* centered horizontally, above bar */
+      font-size:18px;
       z-index: 2;
       pointer-events: none;
     }
 
+    /* Milestone images */
     .milestone-img {
       width: 100px;
       height: 100px;
       object-fit: cover;
       border-radius: 6px;
-
     }
 
-
+    /* Positions along the bar – keep them INSIDE 0–100% */
     .milestone-start {
-      left: -5%;
+      left: 0%;
     }
 
     .milestone-mid1 {
@@ -119,7 +124,7 @@
     }
 
     .milestone-end {
-      left: 93%;
+      left: 100%;
     }
 
     .progress-caption {
