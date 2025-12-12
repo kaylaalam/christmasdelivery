@@ -6,6 +6,67 @@
   <title>Gift Delivery Route</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
+    /* Confetti overlay */
+    .confetti-container {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      /* don't block clicking */
+      overflow: visible;
+      z-index: 999;
+      /* above everything */
+    }
+
+    /* Individual confetti pieces */
+    .confetti-piece {
+      position: absolute;
+      width: 8px;
+      height: 14px;
+      border-radius: 2px;
+      opacity: 0.9;
+      animation: confetti-fall 1.8s linear forwards;
+    }
+
+    /* Fun colors */
+    .confetti-piece.color1 {
+      background: #f97316;
+    }
+
+    /* orange */
+    .confetti-piece.color2 {
+      background: #22c55e;
+    }
+
+    /* green */
+    .confetti-piece.color3 {
+      background: #3b82f6;
+    }
+
+    /* blue */
+    .confetti-piece.color4 {
+      background: #ec4899;
+    }
+
+    /* pink */
+    .confetti-piece.color5 {
+      background: #eab308;
+    }
+
+    /* yellow */
+
+    /* Falling animation */
+    @keyframes confetti-fall {
+      0% {
+        transform: translateY(-10vh) rotate(0deg);
+      }
+
+      100% {
+        transform: translateY(110vh) rotate(360deg);
+      }
+    }
+
+
+
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       margin: 0;
@@ -84,10 +145,10 @@
     .santa-icon {
       position: absolute;
       top: 50%;
-      transform: translate(-50%, -50%);
-      width: 110px;
-      height: 110px;
-      border-radius: 50%;
+      transform: translate(-50%, -60%);
+      width: 80px;
+      height: 50px;
+      /* border-radius: 50%; */
       overflow: hidden;
       z-index: 3;
     }
@@ -113,9 +174,9 @@
 
     /* Milestone images */
     .milestone-img {
-      width: 100px;
-      height: 100px;
-      object-fit: cover;
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
       border-radius: 6px;
     }
 
@@ -133,7 +194,7 @@
     }
 
     .milestone-end {
-      left: 99%;
+      left: 98%;
     }
 
     .progress-caption {
@@ -460,6 +521,9 @@
 </head>
 
 <body>
+
+  <div id="confetti-container" class="confetti-container"></div>
+
   <header>
     Taylor Claus
     <div class="subheader">2-Day Route • Checklists • Maps • Packing Order</div>
@@ -1189,6 +1253,9 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", function () {
+
+      var confettiDone = false;
+
       // Tab switching
       var tabButtons = document.querySelectorAll(".tab-button");
       var views = {
@@ -1271,6 +1338,43 @@
         }
       }
 
+
+      // Confetti launcher
+      function launchConfetti() {
+        var container = document.getElementById("confetti-container");
+        if (!container) return;
+
+        // Clear previous confetti if any
+        container.innerHTML = "";
+
+        var colors = ["color1", "color2", "color3", "color4", "color5"];
+        var pieces = 120; // how many pieces
+
+        for (var i = 0; i < pieces; i++) {
+          var piece = document.createElement("div");
+          piece.classList.add("confetti-piece");
+
+          // random color
+          var colorClass = colors[Math.floor(Math.random() * colors.length)];
+          piece.classList.add(colorClass);
+
+          // random horizontal position
+          piece.style.left = Math.random() * 100 + "vw";
+
+          // random animation delay & duration-ish
+          piece.style.animationDelay = (Math.random() * 0.5) + "s";
+          piece.style.animationDuration = (1.4 + Math.random() * 0.7) + "s";
+
+          container.appendChild(piece);
+        }
+
+        // Remove confetti after a bit so DOM doesn't stay full forever
+        setTimeout(function () {
+          container.innerHTML = "";
+        }, 2500);
+      }
+
+
       // Progress bar: gifts delivered vs total
       function recalcProgress() {
         var checkboxes = document.querySelectorAll('input[type="checkbox"][data-stop-id]');
@@ -1284,6 +1388,8 @@
             deliveredGifts += gifts;
           }
         });
+
+
 
         var pct = totalGifts ? Math.round((deliveredGifts / totalGifts) * 100) : 0;
 
@@ -1330,6 +1436,14 @@
 
         triggerShake(santa);
         triggerShake(miniSanta);
+        // 🎉 Confetti when we hit 100%
+        if (pct === 100 && !confettiDone) {
+          confettiDone = true;
+          launchConfetti();
+        } else if (pct < 100) {
+          // If someone unchecks something, allow confetti again next time
+          confettiDone = false;
+        }
       }
 
 
