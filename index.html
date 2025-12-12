@@ -36,13 +36,21 @@
       padding: 12px;
       max-width: 900px;
       margin: 0 auto;
-      overflow: hidden;
+      /* overflow: hidden; */
     }
 
     /* Progress bar / Santa tracker */
     .progress-card {
-      margin-bottom: 12px;
+      margin-bottom: 8px;
+      position: sticky;
+      top: 0;
+      /* sticks to the very top under the header */
+      z-index: 30;
+      /* above other cards */
+      background: #f5f7fb;
+      /* match page background so it blends in */
     }
+
 
     .progress-label {
       font-size: 0.9rem;
@@ -98,7 +106,7 @@
       top: 50%;
       transform: translate(-50%, -50%);
       /* centered horizontally, above bar */
-      font-size:18px;
+      font-size: 18px;
       z-index: 2;
       pointer-events: none;
     }
@@ -136,13 +144,13 @@
     .tabs {
       display: flex;
       gap: 8px;
-      margin-bottom: 12px;
-      position: sticky;
-      top: 0;
+      margin: 4px 0 12px 0;
+      /* no sticky here so only the progress bar sticks */
       background: #f5f7fb;
-      padding-bottom: 8px;
-      z-index: 10;
+      padding-bottom: 4px;
+      z-index: 5;
     }
+
 
     .tab-button {
       flex: 1;
@@ -355,6 +363,99 @@
       text-decoration: line-through;
       opacity: 0.6;
     }
+
+    /* Mini sticky progress bar */
+    .mini-progress-card {
+      display: none;
+      position: sticky;
+      top: 0;
+      /* sticks at top of scroll area */
+      z-index: 50;
+      padding: 6px 10px;
+      border-radius: 999px;
+      margin-bottom: 8px;
+    }
+
+    .mini-progress-label {
+      font-size: 0.75rem;
+      margin-bottom: 2px;
+      color: #111827;
+      text-align: center;
+    }
+
+    .mini-progress-track {
+      position: relative;
+      height: 10px;
+      background: #e5e7eb;
+      border-radius: 999px;
+      overflow: visible;
+    }
+
+    .mini-progress-fill {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 0%;
+      background: linear-gradient(90deg, #22c55e, #16a34a, #15803d);
+      border-radius: 999px;
+      transition: width 0.3s ease;
+    }
+
+    /* Mini Santa "car" */
+    .mini-santa-icon {
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      overflow: hidden;
+      /* background: #ffffff; */
+      /* box-shadow: 0 2px 4px rgba(15, 23, 42, 0.3); */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 3;
+    }
+
+    .mini-santa-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Shake animation for both Santas */
+    @keyframes car-shake {
+      0% {
+        transform: translate(-50%, -50%) rotate(0deg);
+      }
+
+      20% {
+        transform: translate(-48%, -52%) rotate(-2deg);
+      }
+
+      40% {
+        transform: translate(-52%, -48%) rotate(2deg);
+      }
+
+      60% {
+        transform: translate(-49%, -51%) rotate(-1.5deg);
+      }
+
+      80% {
+        transform: translate(-51%, -49%) rotate(1.5deg);
+      }
+
+      100% {
+        transform: translate(-50%, -50%) rotate(0deg);
+      }
+    }
+
+    .santa-icon.shake,
+    .mini-santa-icon.shake {
+      animation: car-shake 0.35s ease;
+    }
   </style>
 </head>
 
@@ -365,6 +466,24 @@
   </header>
 
   <div class="app-container">
+
+
+    <!-- MINI STICKY PROGRESS BAR -->
+    <div class="card mini-progress-card">
+      <div id="mini-progress-label" class="mini-progress-label">
+        0 / 36 gifts delivered (0%)
+      </div>
+      <div class="mini-progress-track">
+        <div class="mini-progress-fill" id="mini-progress-fill"></div>
+        <div class="mini-santa-icon" id="mini-santa-icon">
+          <!-- use the same image as your main Santa -->
+          <img src="images/santataylor.png" alt="Santa Taylor" class="mini-santa-img" />
+        </div>
+      </div>
+    </div>
+
+
+
 
     <!-- SANTA / TAYLOR PROGRESS BAR -->
     <div class="card progress-card">
@@ -1167,10 +1286,18 @@
         });
 
         var pct = totalGifts ? Math.round((deliveredGifts / totalGifts) * 100) : 0;
+
+        // Big bar elements
         var barFill = document.getElementById("progress-fill");
         var santa = document.getElementById("santa-icon");
         var label = document.getElementById("progress-label");
 
+        // Mini bar elements
+        var miniFill = document.getElementById("mini-progress-fill");
+        var miniSanta = document.getElementById("mini-santa-icon");
+        var miniLabel = document.getElementById("mini-progress-label");
+
+        // Update big bar
         if (barFill) {
           barFill.style.width = pct + "%";
         }
@@ -1180,7 +1307,31 @@
         if (label) {
           label.textContent = deliveredGifts + " / " + totalGifts + " gifts delivered (" + pct + "%)";
         }
+
+        // Update mini bar
+        if (miniFill) {
+          miniFill.style.width = pct + "%";
+        }
+        if (miniSanta) {
+          miniSanta.style.left = pct + "%";
+        }
+        if (miniLabel) {
+          miniLabel.textContent = deliveredGifts + " / " + totalGifts + " gifts delivered (" + pct + "%)";
+        }
+
+        // Little shake animation on movement
+        function triggerShake(elem) {
+          if (!elem) return;
+          elem.classList.remove("shake");
+          // force reflow so animation can restart
+          void elem.offsetWidth;
+          elem.classList.add("shake");
+        }
+
+        triggerShake(santa);
+        triggerShake(miniSanta);
       }
+
 
       // Checklist persistence with localStorage + packing + progress sync
       var checkboxes = document.querySelectorAll('input[type="checkbox"][data-stop-id]');
